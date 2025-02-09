@@ -59,7 +59,7 @@ async function getAIAnalysis(stockData) {
         analysisContent.innerHTML = 'Getting AI analysis...'
         analysisSection.style.display = 'block'
 
-        const response = await fetch('http://localhost:3000/analyze', {
+        const response = await fetch('https://stock-visualizer-7ycf.onrender.com/analyze', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ async function fetchStockData() {
         stockInfo.innerHTML = '<div class="loading">Loading stock data...</div>'
         analysisSection.style.display = 'none'
 
-        const response = await fetch(`http://localhost:3000/stock/${symbol}`)
+        const response = await fetch(`https://stock-visualizer-7ycf.onrender.com/stock/${symbol}`)
         const data = await response.json()
 
         if (data.chart.error) {
