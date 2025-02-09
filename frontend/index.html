@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Stock Analyzer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Smart Stock Analyzer</h1>
+
+        <div class="card">
+            <div class="input-group">
+                <input type="text" id="stockSymbol" placeholder="Enter stock symbol (e.g., AAPL)" />
+                <button id="analyzeButton">Analyze Stock</button>
+            </div>
+
+            <div id="error" class="error"></div>
+            <div id="stockInfo" class="stock-info"></div>
+
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <div id="analysisSection" class="analysis-container" style="display: none">
+            <div class="analysis-header">
+                <h2>AI Analysis</h2>
+                <div id="recommendationBadge" class="recommendation"></div>
+            </div>
+            <div id="analysisContent" class="analysis-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
