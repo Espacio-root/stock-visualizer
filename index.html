@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Portfolio Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #portfolio { margin: 20px; }
+        input, button { margin: 5px; padding: 10px; }
+        canvas { max-width: 600px; margin: auto; }
+    </style>
+</head>
+<body>
+    <h1>Stock Portfolio Tracker</h1>
+    <input type="text" id="stockSymbol" placeholder="Enter stock symbol">
+    <button onclick="addStock()">Add Stock</button>
+    <div id="portfolio"></div>
+    <canvas id="stockChart"></canvas>
+    
+    <script>
+        let stocks = [];
+        let stockChart;
+
+        async function fetchStockData(symbol) {
+            try {
+                const response = await fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbol}`);
+                const data = await response.json();
+                return data.quoteResponse.result[0];
+            } catch (error) {
+                console.error('Error fetching stock data:', error);
+            }
+        }
+
+        async function addStock() {
+            const symbol = document.getElementById('stockSymbol').value.toUpperCase();
+            if (!symbol || stocks.includes(symbol)) return;
+
+            const stockData = await fetchStockData(symbol);
+            if (!stockData) return;
+            stocks.push(symbol);
+
+            const stockDiv = document.createElement('div');
+            stockDiv.id = symbol;
+            stockDiv.innerHTML = `${symbol}: $${stockData.regularMarketPrice} <button onclick="removeStock('${symbol}')">Remove</button>`;
+            document.getElementById('portfolio').appendChild(stockDiv);
+            updateChart();
+        }
+
+        function removeStock(symbol) {
+            stocks = stocks.filter(s => s !== symbol);
+            document.getElementById(symbol).remove();
+            updateChart();
+        }
+
+        function updateChart() {
+            if (stockChart) stockChart.destroy();
+            stockChart = new Chart(document.getElementById('stockChart'), {
+                type: 'bar',
+                data: {
+                    labels: stocks,
+                    datasets: [{
+                        label: 'Stock Prices',
+                        data: stocks.map(s => document.getElementById(s).textContent.match(/\$(\d+\.\d+)/)[1]),
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    }]
+                }
+            });
+        }
+    </script>
+</body>
+</html>
